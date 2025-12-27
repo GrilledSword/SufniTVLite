@@ -748,40 +748,4 @@
     switchMainMode('TV');
 </script>
 </body>
-//#region Diagnostic Overlay
-<div id="sufni-diag" style="position:fixed; top:5px; right:5px; background:rgba(0,0,0,0.8); color:#00ff41; font-family:monospace; font-size:10px; padding:5px; border:1px solid #00ff41; z-index:9999; pointer-events:none;">
-    FPS: <span id="fps-meter">--</span> | MEM: <span id="mem-meter">--</span>
-</div>
-<script>
-    (function(){
-        const fpsElem = document.getElementById('fps-meter');
-        const memElem = document.getElementById('mem-meter');
-        let frameCount = 0;
-        let lastTime = performance.now();
-
-        function updateDiag() {
-            const now = performance.now();
-            frameCount++;
-            if (now - lastTime >= 1000) {
-                const fps = Math.round((frameCount * 1000) / (now - lastTime));
-                fpsElem.innerText = fps;
-                fpsElem.style.color = fps < 20 ? '#ff416c' : (fps < 40 ? '#ffff00' : '#00ff41');
-                
-                if (performance.memory) {
-                    const used = Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
-                    const limit = Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024);
-                    memElem.innerText = `${used} / ${limit} MB`;
-                } else {
-                    memElem.innerText = "N/A";
-                }
-                
-                frameCount = 0;
-                lastTime = now;
-            }
-            requestAnimationFrame(updateDiag);
-        }
-        requestAnimationFrame(updateDiag);
-    })();
-</script>
-//#endregion
 </html>
